@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class Post {
+public class Post extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
