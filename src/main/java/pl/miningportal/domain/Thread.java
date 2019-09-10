@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -11,13 +12,11 @@ import javax.persistence.Id;
 public class Thread {
 
     @Id
-    @GeneratedValue
-    private long threadId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
-    private long userId;
-    @Id
-    private long headThreadId;
+//    private long userId;
+//    private long headThreadId;
 
     private String threadTopic;
     private String content;
