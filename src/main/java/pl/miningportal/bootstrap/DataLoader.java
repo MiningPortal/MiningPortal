@@ -89,13 +89,11 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void LoadUser() {
-
         User user = new User(tUserEmail, tUserNickname, tUserPassword, tUserVerificationStatus, tUserEnabled, tUserAboutMe, tUserAvatarSrc, localDateTime);
         userRepository.save(user);
     }
 
     private void LoadComment() {
-
         Comment comment = new Comment(tCommentBody, tCommentVoteCount, tCommentEnabled);
         commentRepository.save(comment);
     }
