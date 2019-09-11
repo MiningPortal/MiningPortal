@@ -1,25 +1,26 @@
 package pl.miningportal.domain;
 
 import lombok.Data;
+import lombok.NonNull;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table (name = "thread")
 @Data
-public class Thread {
+public class Thread extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    private long userId;
-//    private long headThreadId;
-
+    @NonNull
     private String threadTopic;
+    @NonNull
     private String content;
+    @NonNull
     private String iconSrc;
+
+
 
 }
