@@ -53,6 +53,7 @@ public class DataLoader implements CommandLineRunner {
     //head tread sample data
     private static final String tHeadTreadName = "Sample head tread name";
     private static final String tHeadTreadBody = "Sample head tread body";
+    private static final String tHeadTreadIconSrc = "headTread.icon";
 
     //post sample data
     private static final String tPostTitle = "post title 1";
@@ -99,7 +100,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void LoadHeadThread() {
-        HeadThread headThread = new HeadThread(tHeadTreadName, tHeadTreadBody);
+        HeadThread headThread = new HeadThread(tHeadTreadName, tHeadTreadBody, tHeadTreadIconSrc);
         headThreadRepository.save(headThread);
     }
 
