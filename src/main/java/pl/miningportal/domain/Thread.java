@@ -6,7 +6,7 @@ import lombok.NonNull;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "thread")
+@Table(name = "thread")
 @Data
 public class Thread extends Auditable {
 
@@ -17,10 +17,8 @@ public class Thread extends Auditable {
     @NonNull
     private String threadTopic;
     @NonNull
-    private String content;
+    private String threadContent;
     @NonNull
-    private String iconSrc;
-
-
+    private String threadIconSrc;
 
 }

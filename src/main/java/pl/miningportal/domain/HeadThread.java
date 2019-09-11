@@ -18,5 +18,7 @@ public class HeadThread extends Auditable {
     private String headThreadName;
     @NonNull
     private String headThreadBody;
+    @NonNull
+    private String headTreadIconSrc;
 
 }
