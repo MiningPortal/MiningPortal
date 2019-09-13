@@ -8,11 +8,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "vote")
 @Data
-public class Vote extends Auditable {
+public class Vote extends BaseEntityAuditable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     //    private long postId;
 //    private long commentId;

@@ -8,11 +8,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "thread")
 @Data
-public class Thread extends Auditable {
+public class Thread extends BaseEntityAuditable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NonNull
     private String threadTopic;

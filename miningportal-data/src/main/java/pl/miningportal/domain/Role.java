@@ -6,13 +6,10 @@ import lombok.NonNull;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "role")
+@Table(name = "role")
 @Data
-public class Role extends Auditable {
+public class Role extends BaseEntityAuditable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NonNull
     private String roleName;

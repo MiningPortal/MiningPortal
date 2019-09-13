@@ -7,12 +7,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table (name = "head_thread")
-public class HeadThread extends Auditable {
+@Table(name = "head_thread")
+public class HeadThread extends BaseEntityAuditable {
 
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NonNull
     private String headThreadName;

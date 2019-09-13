@@ -4,16 +4,12 @@ import lombok.Data;
 import lombok.NonNull;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "post")
 @Data
-public class Post extends Auditable{
+public class Post extends BaseEntityAuditable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
 //    private long threadId;
 //    private long userId;

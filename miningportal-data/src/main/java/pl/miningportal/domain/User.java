@@ -9,11 +9,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "user")
 @Data
-public class User extends Auditable {
+public class User extends BaseEntityAuditable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NonNull
     private String email;
@@ -33,5 +30,5 @@ public class User extends Auditable {
     private String avatarSrc;
     @NonNull
     private LocalDateTime lastLoginDate;
-    
+
 }
