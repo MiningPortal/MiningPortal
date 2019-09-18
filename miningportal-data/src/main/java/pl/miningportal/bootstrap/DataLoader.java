@@ -37,42 +37,42 @@ public class DataLoader implements CommandLineRunner {
     }
 
     //user sample data
-    private static final String tUserEmail = "tuser@mail.com";
-    private static final String tUserNickname = "nickname";
-    private static final String tUserPassword = "password";
-    private static final int tUserVerificationStatus = 11;
-    private static final int tUserEnabled = 1;
-    private static final String tUserAboutMe = "sth about me";
-    private static final String tUserAvatarSrc = "avatar.jpg";
+    private static final String USER_1_EMAIL = "tuser@mail.com";
+    private static final String USER_1_NICKNAME = "nickname";
+    private static final String USER_1_PASSWORD = "password";
+    private static final int USER_1_VERIFICATION_STATUS = 11;
+    private static final int USER_1_USER_ENABLED = 1;
+    private static final String USER_1_USER_ABOUT_ME = "sth about me";
+    private static final String USER_1_USER_AVATAR_SRC = "avatar.jpg";
 
     //comment sample data
-    private static final String tCommentBody = "Sample comment body";
-    private static final int tCommentVoteCount = 11;
-    private static final int tCommentEnabled = 1;
+    private static final String COMMENT_1_COMMENT_BODY = "Sample comment body";
+    private static final int COMMENT_1_VOTE_COUNT = 11;
+    private static final int COMMENT_1_COMMENT_ENABLED = 1;
 
     //head tread sample data
-    private static final String tHeadTreadName = "Sample head tread name";
-    private static final String tHeadTreadBody = "Sample head tread body";
-    private static final String tHeadTreadIconSrc = "headTread.icon";
+    private static final String HEAD_THREAD_1_HEAD_THREAD_NAME = "Sample head tread name";
+    private static final String HEAD_THREAD_1_HEAD_THREAD_BODY = "Sample head tread body";
+    private static final String HEAD_THREAD_1_HEAD_THREAD_ICON_SRC = "headTread.icon";
 
     //post sample data
-    private static final String tPostTitle = "post title 1";
-    private static final String tPostBody = "post body 1";
-    private static final int tPostEnabled = 1;
-    private static final int tVoteCount = 11;
+    private static final String POST_1_POST_TITLE = "post title 1";
+    private static final String POST_1_POST_BODY = "post body 1";
+    private static final int HEAD_THREAD_1_POST_ENABLED = 1;
+    private static final int HEAD_THREAD_1_VOTE_COUNT = 11;
 
     //role sample data
-    private static final String tRoleName = "role test";
-    private static final int tRolePower = 10;
+    private static final String ROLE_ADMIN = "admin";
+    private static final int ROLE_POWER = 10;
 
     //status sample data
-    private static final String tStatusName = "sample status 1";
-    private static final String tStatusIconSrc = "status.jpg";
+    private static final String STATUS_HOT = "hot";
+    private static final String STATUS_HOT_ICON_SRC = "hot-status.jpg";
 
     //tread sample data
-    private static final String tThreadTopic = "sample thread topic";
-    private static final String tThreadContent = "sample content";
-    private static final String tThreadIconSrc = "thread.src";
+    private static final String THREAD_1_THREAD_TOPIC = "sample thread topic";
+    private static final String THREAD_1_THREAD_CONTENT = "sample content";
+    private static final String THREAD_1_THREAD_ICON_SRC = "thread.src";
 
     //vote sample data
     private static final int tVoteDirection = 1;
@@ -90,37 +90,47 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void LoadUser() {
-        User user = new User(tUserEmail, tUserNickname, tUserPassword, tUserVerificationStatus, tUserEnabled, tUserAboutMe, tUserAvatarSrc, localDateTime);
-        userRepository.save(user);
+
+        User user_1 = User.builder()
+                .email(USER_1_EMAIL)
+                .nickname(USER_1_NICKNAME)
+                .password(USER_1_PASSWORD)
+                .createdBy("DataLoader.class")
+                .creationDate(LocalDateTime.now())
+                .build();
+
+        userRepository.save(user_1);
+
+
     }
 
     private void LoadComment() {
-        Comment comment = new Comment(tCommentBody, tCommentVoteCount, tCommentEnabled);
+        Comment comment = new Comment(COMMENT_1_COMMENT_BODY, COMMENT_1_VOTE_COUNT, COMMENT_1_COMMENT_ENABLED);
         commentRepository.save(comment);
     }
 
     private void LoadHeadThread() {
-        HeadThread headThread = new HeadThread(tHeadTreadName, tHeadTreadBody, tHeadTreadIconSrc);
+        HeadThread headThread = new HeadThread(HEAD_THREAD_1_HEAD_THREAD_NAME, HEAD_THREAD_1_HEAD_THREAD_BODY, HEAD_THREAD_1_HEAD_THREAD_ICON_SRC);
         headThreadRepository.save(headThread);
     }
 
     private void LoadPost() {
-        Post post = new Post(tPostTitle, tPostBody, tPostEnabled, tVoteCount);
+        Post post = new Post(POST_1_POST_TITLE, POST_1_POST_BODY, HEAD_THREAD_1_POST_ENABLED, HEAD_THREAD_1_VOTE_COUNT);
         postRepository.save(post);
     }
 
     private void LoadRole() {
-        Role role = new Role(tRoleName, tRolePower);
+        Role role = new Role(ROLE_ADMIN, ROLE_POWER);
         roleRepository.save(role);
     }
 
     private void LoadStatus() {
-        Status status = new Status(tStatusName, tStatusIconSrc);
+        Status status = new Status(STATUS_HOT, STATUS_HOT_ICON_SRC);
         statusRepository.save(status);
     }
 
     private void LoadThread() {
-        Thread thread = new Thread(tThreadTopic, tThreadContent, tThreadIconSrc);
+        Thread thread = new Thread(THREAD_1_THREAD_TOPIC, THREAD_1_THREAD_CONTENT, THREAD_1_THREAD_ICON_SRC);
         threadRepository.save(thread);
     }
 
