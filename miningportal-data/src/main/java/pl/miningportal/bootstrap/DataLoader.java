@@ -8,10 +8,12 @@ import pl.miningportal.domain.Thread;
 import pl.miningportal.repository.*;
 
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Component
 @Profile("dev")
+@Transactional
 public class DataLoader implements CommandLineRunner {
 
     private LocalDateTime localDateTime = LocalDateTime.now();
@@ -63,7 +65,9 @@ public class DataLoader implements CommandLineRunner {
 
     //role sample data
     private static final String ROLE_ADMIN = "admin";
-    private static final int ROLE_POWER = 10;
+    private static final int ROLE_ADMIN_POWER = 10;
+    private static final String ROLE_MODERATOR = "moderator";
+    private static final int ROLE_MODERATOR_POWER = 9;
 
     //status sample data
     private static final String STATUS_HOT = "hot";
@@ -87,6 +91,17 @@ public class DataLoader implements CommandLineRunner {
         LoadStatus();
         LoadThread();
         LoadVote();
+
+
+        User user1 = userRepository.findById(1L).get();
+        Role role_admin = roleRepository.findById(1L).get();
+        Role role_moderator = roleRepository.findById(2L).get();
+
+        user1.addRole(role_admin);
+        user1.addRole(role_moderator);
+        userRepository.save(user1);
+
+        userRepository.delete(user1);
     }
 
     private void LoadUser() {
@@ -120,8 +135,11 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void LoadRole() {
-        Role role = new Role(ROLE_ADMIN, ROLE_POWER);
-        roleRepository.save(role);
+        Role role_admin = new Role(ROLE_ADMIN, ROLE_ADMIN_POWER);
+        roleRepository.save(role_admin);
+
+        Role role_moderator = new Role(ROLE_MODERATOR, ROLE_MODERATOR_POWER);
+        roleRepository.save(role_moderator);
     }
 
     private void LoadStatus() {

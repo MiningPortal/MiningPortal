@@ -4,10 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
 @Data
+@NoArgsConstructor
 public class User extends BaseEntityAuditable {
 
 
@@ -54,4 +57,24 @@ public class User extends BaseEntityAuditable {
         this.avatarSrc = avatarSrc;
         this.lastLoginDate = lastLoginDate;
     }
+
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+
+    public void addRole(Role role){
+        roles.add(role);
+    }
+
+    public void addRoles(Set<Role> roles){
+        roles.forEach(this::addRole);
+    }
+
 }
