@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "post")
@@ -32,11 +33,9 @@ public class Post extends BaseEntityAuditable {
     @JoinColumn(name = "thread_id")
     private Thread thread;
 
-//    @OneToMany (mappedBy = "post", fetch = FetchType.LAZY)
-//    private List<Comment> comments;
-//
-//    @OneToMany (mappedBy = "vote", fetch = FetchType.LAZY)
-//    private List<Vote> votes;
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
-
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Vote> votes;
 }

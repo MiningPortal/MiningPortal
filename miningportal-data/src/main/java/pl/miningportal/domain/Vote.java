@@ -11,11 +11,12 @@ import javax.persistence.*;
 public class Vote extends BaseEntityAuditable {
 
 
-    //    private long postId;
-//    private long commentId;
     @NonNull
     private int direction;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "post_id")

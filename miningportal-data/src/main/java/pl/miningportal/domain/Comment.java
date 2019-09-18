@@ -5,18 +5,14 @@ import lombok.Data;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "comment")
 @Data
 public class Comment extends BaseEntityAuditable {
 
-    //    @Id
-//    private long userId;
-//    @Id
-//    private long postId;
-//    @Id
-//    private long voteId;
+
     @NonNull
     private String commentBody;
     @NonNull
@@ -24,10 +20,16 @@ public class Comment extends BaseEntityAuditable {
     @NonNull
     private int commentEnabled;
 
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
-//    @OneToMany(mappedBy = "vote", fetch = FetchType.LAZY)
-//    private List<Vote> votes;
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<Vote> votes;
+
 }
