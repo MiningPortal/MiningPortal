@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -38,4 +40,22 @@ public class Post extends BaseEntityAuditable {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<Vote> votes;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "posts_statuses",
+            joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "status_id", referencedColumnName = "id")
+    )
+    private Set<Status> statuses = new HashSet<>();
+
+    public void addStatus(Status status) {
+        statuses.add(status);
+    }
+
+    public void addStatuses(Set<Status> status) {
+        statuses.forEach(this::addStatus);
+    }
+
 }
