@@ -4,12 +4,16 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "user")
+@EqualsAndHashCode(callSuper = true)
 @Data
+@Entity
+@RequiredArgsConstructor
+@Table(name = "user")
 @NoArgsConstructor
 public class User extends BaseEntityAuditable {
 
@@ -60,13 +64,26 @@ public class User extends BaseEntityAuditable {
 
 
 
+
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
+
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user")
+    private Set<Post> posts = new HashSet<>();
+
+
+
+    public void addPost(Post post) {
+            posts.add(post);
+    }
+
 
 
     public void addRole(Role role){
@@ -75,6 +92,10 @@ public class User extends BaseEntityAuditable {
 
     public void addRoles(Set<Role> roles){
         roles.forEach(this::addRole);
+        // other way
+        // roles.stream().forEach(role -> roles.add(role));
     }
+
+
 
 }

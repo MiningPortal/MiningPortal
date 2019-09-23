@@ -22,7 +22,7 @@ public class Role extends BaseEntityAuditable {
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
-    ;
+
 
 
     public Role(@NonNull String roleName, @NonNull int rolePower) {

@@ -10,6 +10,8 @@ import pl.miningportal.repository.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @Profile("dev")
@@ -27,7 +29,10 @@ public class DataLoader implements CommandLineRunner {
     private ThreadRepository threadRepository;
     private VoteRepository voteRepository;
 
-    public DataLoader(UserRepository userRepository, CommentRepository commentRepository, HeadThreadRepository headThreadRepository, PostRepository postRepository, RoleRepository roleRepository, StatusRepository statusRepository, ThreadRepository threadRepository, VoteRepository voteRepository) {
+    public DataLoader(UserRepository userRepository, CommentRepository commentRepository,
+                      HeadThreadRepository headThreadRepository, PostRepository postRepository,
+                      RoleRepository roleRepository, StatusRepository statusRepository,
+                      ThreadRepository threadRepository, VoteRepository voteRepository) {
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.headThreadRepository = headThreadRepository;
@@ -38,7 +43,7 @@ public class DataLoader implements CommandLineRunner {
         this.voteRepository = voteRepository;
     }
 
-    //user sample data
+    // user sample data
     private static final String USER_1_EMAIL = "tuser@mail.com";
     private static final String USER_1_NICKNAME = "nickname";
     private static final String USER_1_PASSWORD = "password";
@@ -57,9 +62,13 @@ public class DataLoader implements CommandLineRunner {
     private static final String HEAD_THREAD_1_HEAD_THREAD_BODY = "Sample head tread body";
     private static final String HEAD_THREAD_1_HEAD_THREAD_ICON_SRC = "headTread.icon";
 
-    //post sample data
+    // post sample data
     private static final String POST_1_POST_TITLE = "post title 1";
+    private static final String POST_2_POST_TITLE = "post title 2";
+    private static final String POST_3_POST_TITLE = "post title 3";
     private static final String POST_1_POST_BODY = "post body 1";
+    private static final String POST_2_POST_BODY = "post body 2";
+    private static final String POST_3_POST_BODY = "post body 3";
     private static final int HEAD_THREAD_1_POST_ENABLED = 1;
     private static final int HEAD_THREAD_1_VOTE_COUNT = 11;
 
@@ -83,28 +92,46 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        LoadUser();
-        LoadComment();
-        LoadHeadThread();
-        LoadPost();
-        LoadRole();
-        LoadStatus();
-        LoadThread();
-        LoadVote();
+        addManyPostToOneUser();
+        loadUser();
+        loadComment();
+        loadHeadThread();
+        loadPost();
+        loadRole();
+        loadStatus();
+        loadThread();
+        loadVote();
+        // add many post to one user
+        makeNewUserAndAddManyPostToHimAndSave();
+
+
+
 
 
         User user1 = userRepository.findById(1L).get();
         Role role_admin = roleRepository.findById(1L).get();
         Role role_moderator = roleRepository.findById(2L).get();
 
+        Post post1 = postRepository.findById(1L).get();
+        Post post2 = postRepository.findById(2L).get();
+        Post post3 = postRepository.findById(3L).get();
+
+
         user1.addRole(role_admin);
         user1.addRole(role_moderator);
+
+        user1.addPost(post1);
+        user1.addPost(post2);
+        user1.addPost(post3);
+
+
+
         userRepository.save(user1);
 
-        userRepository.delete(user1);
+       // userRepository.delete(user1);
     }
 
-    private void LoadUser() {
+    private void loadUser() {
 
         User user_1 = User.builder()
                 .email(USER_1_EMAIL)
@@ -119,22 +146,62 @@ public class DataLoader implements CommandLineRunner {
 
     }
 
-    private void LoadComment() {
+    private void makeNewUserAndAddManyPostToHimAndSave() {
+        User userForPost = User.builder()
+                .email("damian@gmail.com")
+                .nickname("kaktusx22")
+                .password("bigosHaslo")
+                .createdBy("sam se zrobilem")
+                .creationDate(LocalDateTime.now())
+                .build();
+
+        Post firstPost = new Post(POST_1_POST_TITLE, POST_1_POST_BODY, 1, 2);
+        Post secondPost = new Post(POST_2_POST_TITLE, POST_2_POST_BODY, 1, 2);
+        Post thirdPost = new Post(POST_3_POST_TITLE, POST_3_POST_BODY, 0, 0);
+
+        Set<Post> userPosts = new HashSet<>();
+        userPosts.add(firstPost);
+        userPosts.add(secondPost);
+        userPosts.add(thirdPost);
+        postRepository.saveAll(userPosts);
+
+        firstPost.setUser(userForPost);
+        secondPost.setUser(userForPost);
+        thirdPost.setUser(userForPost);
+
+        postRepository.save(firstPost);
+        postRepository.save(secondPost);
+        postRepository.save(thirdPost);
+
+        userRepository.save(userForPost);
+    }
+
+    private void addManyPostToOneUser() {
+        Post post_1 = new Post("This is first body", "Body Post", 1, 5);
+        Post post_2 = new Post("This is second body", "Body second", 1, 10);
+
+        postRepository.save(post_1);
+        postRepository.save(post_2);
+
+
+    }
+
+    private void loadComment() {
         Comment comment = new Comment(COMMENT_1_COMMENT_BODY, COMMENT_1_VOTE_COUNT, COMMENT_1_COMMENT_ENABLED);
         commentRepository.save(comment);
     }
 
-    private void LoadHeadThread() {
+    private void loadHeadThread() {
         HeadThread headThread = new HeadThread(HEAD_THREAD_1_HEAD_THREAD_NAME, HEAD_THREAD_1_HEAD_THREAD_BODY, HEAD_THREAD_1_HEAD_THREAD_ICON_SRC);
         headThreadRepository.save(headThread);
     }
 
-    private void LoadPost() {
+   private void loadPost() {
         Post post = new Post(POST_1_POST_TITLE, POST_1_POST_BODY, HEAD_THREAD_1_POST_ENABLED, HEAD_THREAD_1_VOTE_COUNT);
         postRepository.save(post);
     }
 
-    private void LoadRole() {
+    private void loadRole() {
         Role role_admin = new Role(ROLE_ADMIN, ROLE_ADMIN_POWER);
         roleRepository.save(role_admin);
 
@@ -142,17 +209,17 @@ public class DataLoader implements CommandLineRunner {
         roleRepository.save(role_moderator);
     }
 
-    private void LoadStatus() {
+    private void loadStatus() {
         Status status = new Status(STATUS_HOT, STATUS_HOT_ICON_SRC);
         statusRepository.save(status);
     }
 
-    private void LoadThread() {
+    private void loadThread() {
         Thread thread = new Thread(THREAD_1_THREAD_TOPIC, THREAD_1_THREAD_CONTENT, THREAD_1_THREAD_ICON_SRC);
         threadRepository.save(thread);
     }
 
-    private void LoadVote() {
+    private void loadVote() {
         Vote vote = new Vote(tVoteDirection);
         voteRepository.save(vote);
     }
