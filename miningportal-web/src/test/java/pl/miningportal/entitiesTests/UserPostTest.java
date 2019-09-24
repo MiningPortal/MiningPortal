@@ -1,9 +1,9 @@
 package pl.miningportal.entitiesTests;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,57 +35,59 @@ public class UserPostTest {
     @Autowired
     private PostRepository postRepository;
 
-    private static  User user =  User.builder()
-            .email("damian@gmail.com")
-            .nickname("kaktusx22")
-            .password("okon")
-            .createdBy("sam se zrobilem")
-            .creationDate(LocalDateTime.now())
-            .build();
-
     private static Post firstPost = new Post("Title of Post", "Body of Post", 1, 10);
     private static Post secondPost = new Post("Title of Post second", "Body of Post", 1, 10);
     private static Set<Post> posts = new HashSet<>();
+    private static User firstUser;
+    private static  User secondUser;
 
 
-    @BeforeEach
-     void setUp() {
-       // MockitoAnnotations.initMocks(this);
-     }
-
-    @Test
-    public void aWhenUserFindByEmail() {
-
-        entityManager.persist(user); // storing entity
-        entityManager.flush(); // runs query to database
-
-        User found = userRepository.findByEmail(user.getEmail());
-        assertThat(found.getNickname()).isEqualTo(user.getNickname());
-        assertThat(found.getPassword()).isEqualTo(user.getPassword());
-
-    }
-    @Test
-    public void bAddManyPostToOneUser() {
-        // create user
-        User userr =  User.builder()
+    @Before
+     public void setUp() {
+        firstUser =  User.builder()
                 .email("damian@gmail.com")
                 .nickname("kaktusx22")
                 .password("okon")
                 .createdBy("sam se zrobilem")
                 .creationDate(LocalDateTime.now())
                 .build();
-        userr.addPost(firstPost);
-        userr.addPost(secondPost);
+
+       secondUser =  User.builder()
+                .email("damian@gmail.com")
+                .nickname("kaktusx22")
+                .password("okon")
+                .createdBy("sam se zrobilem")
+                .creationDate(LocalDateTime.now())
+                .build();
+     }
+
+    @Test
+    public void aWhenUserFindByEmail() {
+
+        entityManager.persist(secondUser); // storing entity
+        entityManager.flush(); // runs query to database
+
+        User found = userRepository.findByEmail(secondUser.getEmail());
+        assertThat(found.getNickname()).isEqualTo(secondUser.getNickname());
+        assertThat(found.getPassword()).isEqualTo(secondUser.getPassword());
+
+    }
+    @Test
+    public void bAddManyPostToOneUser() {
+        // create secondUser
+
+        firstUser.addPost(firstPost);
+        firstUser.addPost(secondPost);
 
         firstPost.setId(1L);
         secondPost.setId(2L);
-       posts.add(firstPost);
-       posts.add(secondPost);
+        posts.add(firstPost);
+        posts.add(secondPost);
 
        // save post
         entityManager.persist(firstPost);
         entityManager.persist(secondPost);
-        entityManager.persist(user);
+        entityManager.persist(secondUser);
         // execute query to save
         entityManager.flush();
 
@@ -108,8 +110,8 @@ public class UserPostTest {
         String secondPostTitle = secondPost.get().getPostTitle();
        assertThat(secondPostTitle.equals("Title of Post second"));
 
-       // check if user has many post
-        Assertions.assertEquals(userr.getPosts().size(), 2);
+       // check if secondUser has many post
+        Assertions.assertEquals(firstUser.getPosts().size(), 2);
     }
 
 
