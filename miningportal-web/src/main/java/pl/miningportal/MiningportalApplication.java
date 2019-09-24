@@ -10,6 +10,4 @@ public class MiningportalApplication {
         SpringApplication.run(MiningportalApplication.class, args);
     }
 
-
-
 }

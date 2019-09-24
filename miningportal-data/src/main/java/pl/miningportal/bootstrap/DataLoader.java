@@ -10,10 +10,7 @@ import pl.miningportal.repository.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @Profile("dev")
@@ -92,6 +89,8 @@ public class DataLoader implements CommandLineRunner {
     //vote sample data
     private static final int tVoteDirection = 1;
 
+
+
     @Override
     public void run(String... args) throws Exception {
         addManyPostToOneUser();
@@ -109,6 +108,9 @@ public class DataLoader implements CommandLineRunner {
         makeNewSinglePostAndAddManyCommentsToOnePost();
         // add many votes to one post
         makeSinglePostAndAddManyVotesToOnePost();
+        // add many votes to one comment
+        makeSingleCommentAndAddManyVotesToOneComment();
+
 
 
 
@@ -156,6 +158,20 @@ public class DataLoader implements CommandLineRunner {
 
     }
 
+    private void makeSingleCommentAndAddManyVotesToOneComment() {
+        Comment commentForVote = new Comment(COMMENT_1_COMMENT_BODY, COMMENT_1_VOTE_COUNT, COMMENT_1_COMMENT_ENABLED);
+        // find existing comments in database
+        Vote firstVote = voteRepository.findById(1L).get();
+        Vote secondVote = voteRepository.findById(2L).get();
+
+        firstVote.setComment(commentForVote);
+        secondVote.setComment(commentForVote);
+
+        voteRepository.save(firstVote);
+        voteRepository.save(secondVote);
+        commentRepository.save(commentForVote);
+    }
+
     private void makeSinglePostAndAddManyVotesToOnePost() {
         Post postForVote = new Post("Love voting", "Can i vote", 1, 5);
         Vote firstVote = new Vote(1);
@@ -175,6 +191,7 @@ public class DataLoader implements CommandLineRunner {
         voteRepository.saveAll(votes);
         postRepository.save(postForVote);
     }
+
     private void makeNewSinglePostAndAddManyCommentsToOnePost() {
         Post postForComment = new Post("Why choose Spring Boot",
                 "Post Body Content",  1, 5);
