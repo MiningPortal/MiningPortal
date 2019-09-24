@@ -33,12 +33,7 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-            <version>1.4.194</version>
-        </dependency>
+
         <!-- TESTING START -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

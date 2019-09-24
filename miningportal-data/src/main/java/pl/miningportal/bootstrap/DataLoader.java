@@ -107,6 +107,12 @@ public class DataLoader implements CommandLineRunner {
         makeNewUserAndAddManyPostToHimAndSave();
         // add many comments to one post
         makeNewSinglePostAndAddManyCommentsToOnePost();
+        // add many votes to one post
+        makeSinglePostAndAddManyVotesToOnePost();
+
+
+
+
 
 
 
@@ -150,6 +156,25 @@ public class DataLoader implements CommandLineRunner {
 
     }
 
+    private void makeSinglePostAndAddManyVotesToOnePost() {
+        Post postForVote = new Post("Love voting", "Can i vote", 1, 5);
+        Vote firstVote = new Vote(1);
+        Vote secondVote = new Vote(2);
+        Vote thirdVote = new Vote(3);
+        List<Vote> votes = new ArrayList<>();
+        votes.add(firstVote);
+        votes.add(secondVote);
+        votes.add(thirdVote);
+
+        voteRepository.saveAll(votes);
+        postRepository.save(postForVote);
+
+        firstVote.setPost(postForVote);
+        secondVote.setPost(postForVote);
+        thirdVote.setPost(postForVote);
+        voteRepository.saveAll(votes);
+        postRepository.save(postForVote);
+    }
     private void makeNewSinglePostAndAddManyCommentsToOnePost() {
         Post postForComment = new Post("Why choose Spring Boot",
                 "Post Body Content",  1, 5);
