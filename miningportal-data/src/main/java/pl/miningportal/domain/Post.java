@@ -38,7 +38,7 @@ public class Post extends BaseEntityAuditable {
     private Thread thread;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL ,mappedBy = "post", fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     @ToString.Exclude

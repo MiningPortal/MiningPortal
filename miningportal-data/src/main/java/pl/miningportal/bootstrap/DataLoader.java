@@ -10,7 +10,9 @@ import pl.miningportal.repository.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -103,6 +105,8 @@ public class DataLoader implements CommandLineRunner {
         loadVote();
         // add many post to one user
         makeNewUserAndAddManyPostToHimAndSave();
+        // add many comments to one post
+        makeNewSinglePostAndAddManyCommentsToOnePost();
 
 
 
@@ -144,6 +148,27 @@ public class DataLoader implements CommandLineRunner {
         userRepository.save(user_1);
 
 
+    }
+
+    private void makeNewSinglePostAndAddManyCommentsToOnePost() {
+        Post postForComment = new Post("Why choose Spring Boot",
+                "Post Body Content",  1, 5);
+
+        Comment firstComment = new Comment("First comment body", 1, 1);
+        Comment secondComment = new Comment("Second comment body", 5, 1);
+        Comment thirdComment = new Comment("Third comment body", 7, 1);
+
+        List<Comment> comments = new ArrayList<>();
+        comments.add(firstComment);
+        comments.add(secondComment);
+        comments.add(thirdComment);
+
+        firstComment.setPost(postForComment);
+        secondComment.setPost(postForComment);
+        thirdComment.setPost(postForComment);
+
+        commentRepository.saveAll(comments);
+        postRepository.save(postForComment);
     }
 
     private void makeNewUserAndAddManyPostToHimAndSave() {
