@@ -70,6 +70,7 @@ local.properties
 ######################
 /log/
 /target/
+/miningportal-web/target
 
 ######################
 # Gradle
